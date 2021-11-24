@@ -10,8 +10,9 @@ type Middleware func(http.HandlerFunc) http.HandlerFunc
 type MetaData interface{}
 
 type Product struct {
-	Id          int64  `json:"id"`
+	Id          string `json:"id"`
 	Name        string `json:"name"`
+	Category    string `json:"category"`
 	Description string `json:"description"`
 	Price       string `json:"price"`
 	Image       string `json:"image"`
