@@ -1,6 +1,6 @@
 # products-crud
 
-Simple crud to Create, Read, Update and delete Products.
+Simple crud to create, read, update and delete products.
 
 #### Create
 `POST http://localhost:3000/api/product`
