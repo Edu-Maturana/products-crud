@@ -1,14 +1,24 @@
 package main
 
 import (
+	"fmt"
 	c "go-crud/controllers"
+	env "go-crud/database"
+	"net/http"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	server := NewServer(":3000")
-	server.Handle("GET", "/api/product", c.GetProducts)
-	server.Handle("POST", "/api/product", c.CreateProduct)
-	server.Handle("PUT", "/api/product", c.UpdateProduct)
-	server.Handle("DELETE", "/api/product", c.DeleteProduct)
-	server.Listen()
+	godotenv.Load(".env")
+
+	port := env.GoDotEnvVar("PORT")
+
+	http.HandleFunc("/api/products", c.GetProducts)
+	http.HandleFunc("/api/products/", c.CreateProduct)
+	http.HandleFunc("/api/products/update/", c.UpdateProduct)
+	http.HandleFunc("/api/products/delete/", c.DeleteProduct)
+
+	http.ListenAndServe(":"+port, nil)
+	fmt.Println("Server started on port " + port)
 }

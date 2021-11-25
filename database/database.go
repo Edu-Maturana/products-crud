@@ -2,21 +2,41 @@ package database
 
 import (
 	"database/sql"
+	"log"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
-func DBConnection() (conecction *sql.DB) {
-	Driver := "mysql"
-	User := "u3ld0sazbrzmmcpa"
-	Password := "2pCUIaAlXSm2F7PQKFa0"
-	DBName := "bkabj8wc6zhqrkc6juvw"
-	Host := "bkabj8wc6zhqrkc6juvw-mysql.services.clever-cloud.com"
+func GoDotEnvVar(key string) string {
 
-	conecction, err := sql.Open(Driver, User+":"+Password+"@tcp("+Host+")/"+DBName)
+	// load .env file
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
+	return os.Getenv(key)
+}
+
+func DBConnection() (conecction *sql.DB) {
+	err := godotenv.Load()
+	if err != nil {
+		panic("Error loading .env file")
+	}
+
+	Driver := GoDotEnvVar("DRIVER")
+	User := GoDotEnvVar("USER")
+	Password := GoDotEnvVar("PASSWORD")
+	DB_Name := GoDotEnvVar("DB_NAME")
+	Host := GoDotEnvVar("HOST")
+
+	conn, err := sql.Open(Driver, User+":"+Password+"@tcp("+Host+")/"+DB_Name)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	return conecction
+	return conn
 }
