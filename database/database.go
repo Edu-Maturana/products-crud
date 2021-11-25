@@ -2,38 +2,19 @@ package database
 
 import (
 	"database/sql"
-	"log"
-	"os"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
 )
 
-func GoDotEnvVar(key string) string {
+func DBConnection() (connection *sql.DB) {
 
-	// load .env file
-	err := godotenv.Load(".env")
+	DRIVER := "mysql"
+	USER := "u3ld0sazbrzmmcpa"
+	PASS := "2pCUIaAlXSm2F7PQKFa0"
+	DB_NAME := "bkabj8wc6zhqrkc6juvw"
+	HOST := "bkabj8wc6zhqrkc6juvw-mysql.services.clever-cloud.com"
 
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
-
-	return os.Getenv(key)
-}
-
-func DBConnection() (conecction *sql.DB) {
-	err := godotenv.Load()
-	if err != nil {
-		panic("Error loading .env file")
-	}
-
-	Driver := GoDotEnvVar("DRIVER")
-	User := GoDotEnvVar("USER")
-	Password := GoDotEnvVar("PASSWORD")
-	DB_Name := GoDotEnvVar("DB_NAME")
-	Host := GoDotEnvVar("HOST")
-
-	conn, err := sql.Open(Driver, User+":"+Password+"@tcp("+Host+")/"+DB_Name)
+	conn, err := sql.Open(DRIVER, USER+":"+PASS+"@tcp("+HOST+")/"+DB_NAME)
 	if err != nil {
 		panic(err.Error())
 	}
